@@ -12,5 +12,12 @@ namespace JsonMasker
                 return source;
             return source.Substring(source.Length - tail_length);
         }
+
+        public static string GetFirst(this string source, int length)
+        {
+            if (length >= source.Length)
+                return source;
+            return source.Substring(0, length);
+        }
     }
 }
