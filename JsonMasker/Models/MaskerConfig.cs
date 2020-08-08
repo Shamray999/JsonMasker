@@ -7,6 +7,7 @@ namespace JsonMasker
     public class MaskerConfig
     {
         public string JsonPath { get; set; }
-        public CustomMaskType CustomMask { get; set; }
+        public int StartWith { get; set; }
+        public int EndWith { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace JsonMasker.Tests
         {
             var maskConfig = new List<MaskerConfig>()
             {
-                new MaskerConfig(){ JsonPath = "Result.creditCards[*].cardNum", CustomMask = CustomMaskType.ShowLast4Chars },
+                new MaskerConfig(){ JsonPath = "Result.creditCards[*].cardNum"},
             };
 
             var jsonMasker = new JsonMasker();

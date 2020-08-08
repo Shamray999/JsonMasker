@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace JsonMasker
 {
@@ -29,38 +28,22 @@ namespace JsonMasker
             {
                 foreach (JToken match in token.SelectTokens(config.JsonPath))
                 {
-                    match.Replace(new JValue(MaskValue(match.ToString(), config.CustomMask)));
+                    match.Replace(new JValue(MaskValue(match.ToString(), config.StartWith, config.EndWith)));
                 }
             }
 
             return token.ToString();
         }
 
-        private string MaskValue(string jsonValue, CustomMaskType regexMask = CustomMaskType.HideAll)
+        private string MaskValue(string jsonValue, int startWith, int endWith)
         {
             if (string.IsNullOrWhiteSpace(jsonValue))
                 return string.Empty;
 
             var maskTemplate = "*****";
-            var maskedValue = string.Empty;
-
-            switch (regexMask)
-            {
-                case CustomMaskType.HideAll:
-                    maskedValue = maskTemplate;
-                    break;
-                case CustomMaskType.ShowLast4Chars:
-                    maskedValue = $"{maskTemplate}{jsonValue.GetLast(4)}";
-                    break;
-                case CustomMaskType.ShowFirst:
-                    maskedValue = $"{jsonValue.First()}{maskTemplate}";
-                    break;
-                case CustomMaskType.ShowFirstAndLast:
-                    maskedValue = $"{jsonValue.First()}{maskTemplate}{jsonValue.Last()}";
-                    break;
-            }
-
-            return maskedValue;
+            
+            
+            return maskTemplate;
         }
     }
 }
