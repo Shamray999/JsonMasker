@@ -17,7 +17,12 @@ namespace JsonMasker.Tests
                   ""UserName"": ""TestUser"",
                   ""Password"": ""TestPassword""
                 },
-                ""creditCards"": [{ ""cardNum"": ""4581111111111"" }, { ""cardNum"": ""4581111111234"" }, { ""cardNum"": ""4581111117978"" } ]
+                ""creditCards"": [
+                                    { ""cardNum"": ""4581111111111"", ""cvv"": ""123"" },
+                                    { ""cardNum"": ""4581111111234"", ""cvv"": ""589"" },
+                                    { ""cardNum"": ""4581111115698"", ""cvv"": ""987"" },
+                                    { ""cardNum"": ""4581111117978"", ""cvv"": ""987"" }
+                                 ]
               }
             }";
         }
