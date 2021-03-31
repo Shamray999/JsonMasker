@@ -7,13 +7,23 @@ namespace JsonMasker
 {
     public class JsonMasker
     {
-        public string MaskJson(string jsonObject, IEnumerable<MaskerConfig> configs)
+        public string MaskJson(string source, IEnumerable<MaskerConfig> configs)
         {
-            if (string.IsNullOrWhiteSpace(jsonObject))
+            if (string.IsNullOrWhiteSpace(source))
                 return string.Empty;
 
-            JToken token = JToken.Parse(jsonObject);
-            return MaskJson(token, configs);
+            JToken jtoken;
+
+            try
+            {
+                jtoken = JToken.Parse(source);
+            }
+            catch (Exception)
+            {
+                return source;
+            }
+
+            return MaskJson(jtoken, configs);
         }
 
         public string MaskJson(JToken token, IEnumerable<MaskerConfig> configs)
@@ -22,28 +32,31 @@ namespace JsonMasker
                 return string.Empty;
 
             if (configs == null || configs.Count() == 0)
-                return string.Empty;
+                token.ToString();
 
             foreach (var config in configs)
             {
                 foreach (JToken match in token.SelectTokens(config.JsonPath))
                 {
-                    match.Replace(new JValue(MaskValue(match.ToString(), config.StartWith, config.EndWith)));
+                    match.Replace(new JValue(MaskValue(match.ToString(), config.ShowFirst, config.ShowLast)));
                 }
             }
 
             return token.ToString();
         }
 
-        private string MaskValue(string jsonValue, int startWith, int endWith)
+        private string MaskValue(string jsonValue, int showFromHead, int showFromTail)
         {
             if (string.IsNullOrWhiteSpace(jsonValue))
                 return string.Empty;
 
-            var maskTemplate = "*****";
-            
-            
-            return maskTemplate;
+            if ((showFromHead + showFromTail) > jsonValue.Length)
+                return jsonValue;
+
+            var maskLength = jsonValue.Length - (showFromHead + showFromTail);
+            var maskArray = Enumerable.Range(1, maskLength).Select(x => '*').ToArray();
+
+            return $"{jsonValue.GetFirst(showFromHead)}{new string(maskArray)}{jsonValue.GetLast(showFromTail)}";
         }
     }
 }
